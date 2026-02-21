@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: crud-app
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/products_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    # Отключаем Open Session In View
+    # Все SQL-запросы выполняются явно в Service слое
+    open-in-view: false
+    hibernate:
+      # Для разработки выбрал update.
+      # В проде понимаю,что лучше использовать none или validate, т.к. изменения БД обычно происходят через миграции (Flyway/Liquibase).
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        jdbc:
+          time_zone: UTC
+
+springdoc:
+  info:
+      title: CRUD App
+      description: API для управления продуктами с расчётом скидок
+      version: 1.0.0
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
