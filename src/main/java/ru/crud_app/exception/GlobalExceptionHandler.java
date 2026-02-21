@@ -1,11 +1,15 @@
 package ru.crud_app.exception;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import ru.crud_app.dto.ExceptionResponseDTO;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -19,6 +23,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ApiResponse(responseCode = "404", description = "Ресурс не найден",
+            content = @Content(schema = @Schema(implementation = ExceptionResponseDTO.class)))
     public ResponseEntity<Map<String, Object>> handleResourceNotFoundException(ResourceNotFoundException ex) {
         Map<String, Object> body = new HashMap<>();
 
@@ -35,6 +41,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiResponse(responseCode = "400", description = "Ошибка валидации",
+            content = @Content(schema = @Schema(implementation = ExceptionResponseDTO.class)))
     public ResponseEntity<Map<String, Object>> handleArgumentNotValidException(MethodArgumentNotValidException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
@@ -57,6 +65,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ApiResponse(responseCode = "500", description = "Обработка остальный исключений",
+            content = @Content(schema = @Schema(implementation = ExceptionResponseDTO.class)))
     public ResponseEntity<Map<String, Object>> handleException(Exception ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());

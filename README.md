@@ -20,12 +20,120 @@ Spring Boot 3.x REST API для управления товарами с рас�
 
 ---
 
-## 📝 Краткое описание API
+## 📝 Описание API и примеры запросов/ответов
 
 1. **POST** `/products` - создание товара
+
+#### Пример запроса:
+
+```bash
+curl -X POST http://localhost:8080/products \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Effective Java",
+    "description": "Best practices",
+    "price": 2500.00,
+    "category": "BOOKS"
+  }'
+```
+
+#### Пример ответа:
+
+```json
+{
+  "id": 1,
+  "name": "Effective Java",
+  "description": "Best practices",
+  "price": 2500.00,
+  "discountedPrice": 2250.00,
+  "category": "BOOKS",
+  "createdAt": "2024-01-15T10:30:00",
+  "updatedAt": "2024-01-15T10:30:00"
+}
+```
+
+### Далее будут примеры на основе запроса на созданный товар
+
+#### (представим что у нас в БД только 1 товар, который мы создали)
+
 2. **GET**  `/products/id` - получение товара по ID
+
+#### Пример запроса:
+
+```bash
+curl http://localhost:8080/products/1
+```
+
+#### Пример ответа:
+
+```json
+{
+  "id": 1,
+  "name": "Effective Java",
+  "description": "Best practices",
+  "price": 2500.00,
+  "discountedPrice": 2250.00,
+  "category": "BOOKS",
+  "createdAt": "2024-01-15T10:30:00",
+  "updatedAt": "2024-01-15T10:30:00"
+}
+```
+
 3. **GET**  `/products?page=&size=&category=` - получние всех товаров (можно отфильтровать по категории)
-4. **DELETE** `/products/id` - удаление товара
+
+#### Пример запроса:
+
+```bash
+curl "http://localhost:8080/products?page=0&size=10&category=BOOKS"
+```
+
+| Параметр   | Тип     | Обязательный | Значение по умолчанию | Описание                                        |
+|------------|---------|--------------|-----------------------|-------------------------------------------------|
+| `page`     | integer | нет          | `0`                   | Номер страницы (0-based)                        |
+| `size`     | integer | нет          | `10`                  | Элементов на странице                           |
+| `category` | string  | нет          | —                     | Фильтр: `ELECTRONICS`, `BOOKS`, `FOOD`, `OTHER` |
+
+#### Пример ответа:
+```json
+{
+  "content": [
+    {
+      "id": 1,
+      "name": "Effective Java",
+      "description": "Best practices",
+      "price": 2500.00,
+      "discountedPrice": 2250.00,
+      "category": "BOOKS",
+      "createdAt": "2024-01-15T10:30:00",
+      "updatedAt": "2024-01-15T10:30:00"
+    }
+  ],
+  "page": {
+    "size": 10,
+    "number": 0,
+    "totalElements": 1,
+    "totalPages": 1
+  }
+}
+```
+6. **DELETE** `/products/id` - удаление товара
+
+#### Пример запроса:
+
+```bash
+curl -X DELETE http://localhost:8080/products/1
+```
+
+### Коды ответов API
+
+| Код   | Описание              | Когда возвращается              |
+|-------|-----------------------|---------------------------------|
+| `200` | OK                    | Успешное чтение/обновление      |
+| `201` | Created               | Успешное создание товара        |
+| `204` | No Content            | Успешное удаление               |
+| `400` | Bad Request           | Ошибка валидации входных данных |
+| `404` | Not Found             | Товар с указанным ID не найден  |
+| `500` | Internal Server Error | Внутренняя ошибка сервера       |
 
 ### Подробнее о запросах и ответах можно прочитать в [Swagger UI](http://localhost:8080/swagger-ui/index.html) после запуска проекта и там же их протестировать самостоятельно
 
