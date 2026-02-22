@@ -30,8 +30,8 @@ Spring Boot 3.x REST API для управления товарами с рас�
 curl -X POST http://localhost:8080/products \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Effective Java",
-    "description": "Best practices",
+    "name": "Java",
+    "description": "Practices",
     "price": 2500.00,
     "category": "BOOKS"
   }'
@@ -42,8 +42,8 @@ curl -X POST http://localhost:8080/products \
 ```json
 {
   "id": 1,
-  "name": "Effective Java",
-  "description": "Best practices",
+  "name": "Java",
+  "description": "Practices",
   "price": 2500.00,
   "discountedPrice": 2250.00,
   "category": "BOOKS",
@@ -69,8 +69,8 @@ curl http://localhost:8080/products/1
 ```json
 {
   "id": 1,
-  "name": "Effective Java",
-  "description": "Best practices",
+  "name": "Java",
+  "description": "Practices",
   "price": 2500.00,
   "discountedPrice": 2250.00,
   "category": "BOOKS",
@@ -99,8 +99,8 @@ curl "http://localhost:8080/products?page=0&size=10&category=BOOKS"
   "content": [
     {
       "id": 1,
-      "name": "Effective Java",
-      "description": "Best practices",
+      "name": "Java",
+      "description": "Practices",
       "price": 2500.00,
       "discountedPrice": 2250.00,
       "category": "BOOKS",
